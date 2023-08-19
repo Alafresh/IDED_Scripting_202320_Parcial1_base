@@ -117,16 +117,46 @@ namespace TestProject1
 
         internal static Queue<Ticket>[] ClassifyTickets(List<Ticket> sourceList)
         {
-            Queue<Ticket>[] result = null;
+            // Crear un arreglo de colas para cada tipo de solicitud
+            Queue<Ticket>[] result = new Queue<Ticket>[3];
+
+            // Inicializamos cada cola en el arreglo
+            for (int i = 0; i < 3; i++)
+            {
+                result[i] = new Queue<Ticket>();
+            }
+
+            // Ordenar la lista de tickets por el valor de Turn en orden ascendente
+            sourceList.Sort((a, b) => a.Turn.CompareTo(b.Turn));
+
+            // Iterar sobre cada ticket en la lista ordenada
+            foreach (var ticket in sourceList)
+            {
+                // Obtener el índice de la cola apropiada según el tipo de solicitud
+                int idx = GetQueueIndex(ticket.RequestType);
+                // Encolar el ticket en la cola correspondiente
+                result[idx].Enqueue(ticket);
+            }
 
             return result;
         }
 
+        internal static int GetQueueIndex(Ticket.ERequestType requestType)
+        {
+            // Utilizamos un switch expression para asignar un índice a cada tipo de solicitud
+            return requestType switch
+            {
+                Ticket.ERequestType.Payment => 0,
+                Ticket.ERequestType.Subscription => 1,
+                Ticket.ERequestType.Cancellation => 2,
+                _ => throw new ArgumentException("Unknown request type")
+            };
+        }
         internal static bool AddNewTicket(Queue<Ticket> targetQueue, Ticket ticket)
         {
             bool result = false;
 
             return result;
-        }        
+        }
     }
 }

@@ -46,7 +46,26 @@ namespace TestProject1
         }
         internal static Dictionary<int, EValueType> FillDictionaryFromSource(int[] sourceArr)
         {
-            Dictionary<int, EValueType> result = null;
+            // Crear un diccionario para almacenar los números y sus valores correspondientes
+            Dictionary<int, EValueType> result = new Dictionary<int, EValueType>();
+
+            // Iterar a través de cada número en el arreglo de origen
+            foreach (int item in sourceArr)
+            {
+                // switch expression devuelve un valor que se asigna
+                EValueType value = item switch
+                {
+                    // cada var n se compara con el item si cumple la comparacion se asigna el resultado si no _ sera el caso predeterminado
+                    var n when n % 2 == 0 => EValueType.Two,
+                    var n when n % 3 == 0 => EValueType.Three,
+                    var n when n % 5 == 0 => EValueType.Five,
+                    var n when n % 7 == 0 => EValueType.Seven,
+                    // Si el número no cumple con ninguno de los casos anteriores, asignar "Prime" como valor
+                    _ => EValueType.Prime
+                };
+                // Agregar el número y su valor al diccionario de resultados
+                result[item] = value;
+            }
 
             return result;
         }

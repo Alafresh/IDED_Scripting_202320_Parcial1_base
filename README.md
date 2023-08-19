@@ -31,8 +31,8 @@ En esta evaluación parcial, hemos trabajado en conceptos y aplicaciones relacion
 
 Si tiene alguna pregunta o comentario sobre este repositorio o la evaluación parcial, no dude en ponerse en contacto con los participantes:
 
-- Cristian Usuga: cristian.usuga@example.com
-- Juan Guillermo Caicedo: juan.caicedo@example.com
+- Cristian Usuga: cristian.usuga@upb.edu.co
+- Juan Guillermo Caicedo: juang.caicedo@upb.edu.co
 
 ## Agradecimientos
 

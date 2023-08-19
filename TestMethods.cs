@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TestProject1
 {
@@ -60,6 +61,7 @@ namespace TestProject1
                     var n when n % 3 == 0 => EValueType.Three,
                     var n when n % 5 == 0 => EValueType.Five,
                     var n when n % 7 == 0 => EValueType.Seven,
+                    
                     // Si el número no cumple con ninguno de los casos anteriores, asignar "Prime" como valor
                     _ => EValueType.Prime
                 };
@@ -72,13 +74,44 @@ namespace TestProject1
 
         internal static int CountDictionaryRegistriesWithValueType(Dictionary<int, EValueType> sourceDict, EValueType type)
         {
-            return 0;
+            // Inicializar un contador para contar los elementos que coinciden con el valor deseado
+            int contador = 0;
+            
+            // Iterar a través de cada par clave-valor en el diccionario
+            foreach (var value in sourceDict.Values)
+            {
+                // Comprueba si el valor actual coincide con el valor deseado
+                if (value == type)
+                {
+                    contador++;
+                }
+            }
+            // Devuelve el contador que representa la cantidad de elementos que coinciden con el valor deseado
+            return contador;
         }
 
         internal static Dictionary<int, EValueType> SortDictionaryRegistries(Dictionary<int, EValueType> sourceDict)
         {
-            Dictionary<int, EValueType> result = null;
+            // Crear un array para almacenar las claves ordenadas
+            int[] sortedKeys = new int[sourceDict.Count];
+            
+            // Copiar las claves del diccionario en el array de claves ordenadas
+            sourceDict.Keys.CopyTo(sortedKeys, 0);
 
+            // Ordenar las claves en orden descendente utilizando Array.Sort (a,b) => b.CompareTo(a) es una expresion lambda que define el orden de las llaves
+            Array.Sort(sortedKeys, (a, b) => b.CompareTo(a));
+           
+            // Crear un nuevo diccionario para almacenar el resultado ordenado
+            Dictionary<int, EValueType> result = new Dictionary<int, EValueType>();
+            
+            // Iterar a través de las claves ordenadas
+            foreach (int key in sortedKeys)
+            {
+                // Asignar al nuevo diccionario el valor del diccionario fuente utilizando la clave actual
+                result[key] = sourceDict[key];
+            }
+
+            // Devolver el diccionario ordenado resultante
             return result;
         }
 

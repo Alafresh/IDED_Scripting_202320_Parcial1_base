@@ -15,11 +15,35 @@ namespace TestProject1
 
         internal static Stack<int> GetNextGreaterValue(Stack<int> sourceStack)
         {
-            Stack<int> result = null;
+            // fila para los resultados
+            Stack<int> result = new Stack<int>();
+            // fila temporal para rastrear los numeros
+            Stack<int> tmp = new Stack<int>();
 
-            return result;
+            foreach (int item in sourceStack)
+            {
+                // Mientras la pila temporal no esté vacía y el elemento en la cima sea menor o igual a item el cual es el numero actual
+                while (tmp.Count > 0 && tmp.Peek() <= item)
+                {
+                    // Eliminamos un elemento en la cima temporal hasta encontrar uno mayor
+                    tmp.Pop();
+                }
+                // Calcular el siguiente número mayor y agregarlo al resultado
+                int nxt = tmp.Count > 0 ? tmp.Peek() : -1;
+                result.Push(nxt);
+
+                // Agregar el número actual a la pila temporal para su posterior comparación
+                tmp.Push(item);
+            }
+
+            //Crear una pila para almacenar el resultado final
+            Stack<int> result2 = new Stack<int>();
+            foreach (int item in result)
+            {
+                result2.Push(item);
+            }
+            return result2;
         }
-
         internal static Dictionary<int, EValueType> FillDictionaryFromSource(int[] sourceArr)
         {
             Dictionary<int, EValueType> result = null;

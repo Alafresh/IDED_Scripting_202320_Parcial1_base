@@ -61,7 +61,7 @@ namespace TestProject1
                     var n when n % 3 == 0 => EValueType.Three,
                     var n when n % 5 == 0 => EValueType.Five,
                     var n when n % 7 == 0 => EValueType.Seven,
-                    
+
                     // Si el número no cumple con ninguno de los casos anteriores, asignar "Prime" como valor
                     _ => EValueType.Prime
                 };
@@ -76,7 +76,7 @@ namespace TestProject1
         {
             // Inicializar un contador para contar los elementos que coinciden con el valor deseado
             int contador = 0;
-            
+
             // Iterar a través de cada par clave-valor en el diccionario
             foreach (var value in sourceDict.Values)
             {
@@ -94,16 +94,16 @@ namespace TestProject1
         {
             // Crear un array para almacenar las claves ordenadas
             int[] sortedKeys = new int[sourceDict.Count];
-            
+
             // Copiar las claves del diccionario en el array de claves ordenadas
             sourceDict.Keys.CopyTo(sortedKeys, 0);
 
             // Ordenar las claves en orden descendente utilizando Array.Sort (a,b) => b.CompareTo(a) es una expresion lambda que define el orden de las llaves
             Array.Sort(sortedKeys, (a, b) => b.CompareTo(a));
-           
+
             // Crear un nuevo diccionario para almacenar el resultado ordenado
             Dictionary<int, EValueType> result = new Dictionary<int, EValueType>();
-            
+
             // Iterar a través de las claves ordenadas
             foreach (int key in sortedKeys)
             {
@@ -152,11 +152,62 @@ namespace TestProject1
                 _ => throw new ArgumentException("Unknown request type")
             };
         }
+
         internal static bool AddNewTicket(Queue<Ticket> targetQueue, Ticket ticket)
         {
-            bool result = false;
+            // Verificar si el turno es válido (entre 1 y 99)
+            if (ticket.Turn < 1 || ticket.Turn > 99)
+            {
+                return false; // No se puede agregar un turno inválido
+            }
 
-            return result;
+            // Obtener el tipo de solicitud de la cola objetivo
+            Ticket.ERequestType targetRequestType = GetQueueRequestType(targetQueue);
+
+            // Verificar si el tipo de solicitud del nuevo ticket coincide con la cola objetivo
+            if (ticket.RequestType == targetRequestType)
+            {
+                // Agregar el nuevo ticket a la cola objetivo
+                targetQueue.Enqueue(ticket);
+                return true; // Ticket agregado con éxito
+            }
+            else
+            {
+                return false; // No se puede agregar a una cola incorrecta
+            }
         }
+
+        // Obtener el tipo de solicitud de la cola objetivo
+        internal static Ticket.ERequestType GetQueueRequestType(Queue<Ticket> targetQueue)
+        {
+            // Verificar si la cola objetivo es nula
+            if (targetQueue == null)
+            {
+                throw new ArgumentNullException(nameof(targetQueue));
+            }
+
+            // Iterar a través de los tickets en la cola objetivo
+            foreach (Ticket ticket in targetQueue)
+            {
+
+                // Aquí se compara el tipo de solicitud de cada ticket con los tipos de solicitud conocidos
+                if (ticket.RequestType == Ticket.ERequestType.Payment)
+                {
+                    return Ticket.ERequestType.Payment;
+                }
+                else if (ticket.RequestType == Ticket.ERequestType.Subscription)
+                {
+                    return Ticket.ERequestType.Subscription;
+                }
+                else if (ticket.RequestType == Ticket.ERequestType.Cancellation)
+                {
+                    return Ticket.ERequestType.Cancellation;
+                }
+            }
+            // Si se han revisado todos los tickets en la cola y ninguno coincide con los tipos de solicitud conocidos, se lanza una excepción
+            throw new ArgumentException("Unknown request type");
+        }
+
+
     }
 }
